@@ -3,6 +3,7 @@
 namespace Superbalist\SimpleSMSPanaceaMobile;
 
 use GuzzleHttp\Client;
+use SimpleSoftwareIO\SMS\DriverManager;
 use SimpleSoftwareIO\SMS\SMSServiceProvider;
 use Superbalist\PanaceaMobile\PanaceaMobileAPI;
 
@@ -15,7 +16,35 @@ class PanaceaMobileSMSServiceProvider extends SMSServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/sms.php', 'sms');
 
+        $this->registerManager();
+        $this->registerCustomDriver();
+
         parent::register();
+    }
+
+    /**
+     * Register the driver manager.
+     */
+    public function registerManager()
+    {
+        $this->app->singleton('sms.manager', function ($app) {
+            return new DriverManager($app);
+        });
+    }
+
+    /**
+     * Register the custom PanaceaMobileAPI driver.
+     */
+    public function registerCustomDriver()
+    {
+        $manager = $this->app->make('sms.manager');
+        /** @var DriverManager $manager */
+        $manager->extend('panaceamobile', function ($app) {
+            $config = $app['config']->get('sms.panacea_mobile', []);
+            $guzzleClient = new Client();
+            $client = new PanaceaMobileAPI($guzzleClient, $config['username'], $config['password']);
+            return new PanaceaMobileSMS($client);
+        });
     }
 
     /**
@@ -23,12 +52,20 @@ class PanaceaMobileSMSServiceProvider extends SMSServiceProvider
      */
     public function registerSender()
     {
-        parent::registerSender();
-
-        $this->app['sms.sender']->extend('panaceamobile', function () {
-            $client = new Client();
-            // TODO: set username and password
-            return new PanaceaMobileAPI($client);
+        $this->app['sms.sender'] = $this->app->share(function ($app) {
+            $manager = $app->make('sms.manager');
+            /** @var DriverManager $manager */
+            return $manager->driver();
         });
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array_merge(parent::provides(), ['sms.manager']);
     }
 }
