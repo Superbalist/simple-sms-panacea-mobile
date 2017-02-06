@@ -38,7 +38,7 @@ class PanaceaMobileSMSServiceProvider extends SMSServiceProvider
     public function registerCustomDriver()
     {
         $manager = $this->app->make('sms.manager');
-        /** @var DriverManager $manager */
+        /* @var DriverManager $manager */
         $manager->extend('panaceamobile', function ($app) {
             $config = $app['config']->get('sms.panacea_mobile', []);
             $guzzleClient = new Client();
@@ -54,7 +54,7 @@ class PanaceaMobileSMSServiceProvider extends SMSServiceProvider
     {
         $this->app['sms.sender'] = $this->app->share(function ($app) {
             $manager = $app->make('sms.manager');
-            /** @var DriverManager $manager */
+            /* @var DriverManager $manager */
             return $manager->driver();
         });
     }
