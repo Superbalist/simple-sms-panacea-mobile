@@ -4,6 +4,7 @@ An adapter for the [simple-sms](https://github.com/SimpleSoftwareIO/simple-sms) 
 
 [![Author](http://img.shields.io/badge/author-@superbalist-blue.svg?style=flat-square)](https://twitter.com/superbalist)
 [![Build Status](https://img.shields.io/travis/Superbalist/simple-sms-panacea-mobile/master.svg?style=flat-square)](https://travis-ci.org/Superbalist/simple-sms-panacea-mobile)
+[![StyleCI](https://styleci.io/repos/70465005/shield?branch=master)](https://styleci.io/repos/70465005)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Packagist Version](https://img.shields.io/packagist/v/superbalist/simple-sms-panacea-mobile.svg?style=flat-square)](https://packagist.org/packages/superbalist/simple-sms-panacea-mobile)
 [![Total Downloads](https://img.shields.io/packagist/dt/superbalist/simple-sms-panacea-mobile.svg?style=flat-square)](https://packagist.org/packages/superbalist/simple-sms-panacea-mobile)
